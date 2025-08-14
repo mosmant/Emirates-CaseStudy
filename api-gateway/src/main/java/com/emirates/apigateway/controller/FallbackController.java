@@ -20,7 +20,6 @@ public class FallbackController {
         response.put("timestamp", LocalDateTime.now());
         response.put("status", "SERVICE_UNAVAILABLE");
         response.put("message", "Backend service is currently unavailable");
-        response.put("error", "Circuit breaker is open");
         response.put("path", "/api/apps");
         
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
@@ -32,7 +31,6 @@ public class FallbackController {
         response.put("timestamp", LocalDateTime.now());
         response.put("status", "DOWN");
         response.put("message", "Health check service is currently unavailable");
-        response.put("error", "Circuit breaker is open");
         response.put("path", "/health");
         
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
