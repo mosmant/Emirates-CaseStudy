@@ -1,3 +1,2 @@
-com/example/apigateway/service/AppGatewayService.class
-com/example/apigateway/controller/AppGatewayController.class
-com/example/apigateway/ApiGatewayApplication.class
+com/emirates/apigateway/controller/AppGatewayController.class
+com/emirates/apigateway/ApiGatewayApplication.class

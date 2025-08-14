@@ -1,10 +1,6 @@
 server:
   port: 8080
 
-node:
-  service:
-    url: http://localhost:3000 # Node.js service address
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
