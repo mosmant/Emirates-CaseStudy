@@ -2,12 +2,34 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 
 const appRoutes = require('./routes/appRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Swagger configuration
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Emirates Backend API',
+      version: '1.0.0',
+      description: 'API for managing applications data',
+    },
+    servers: [
+      {
+        url: `http://localhost:${PORT}`,
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: ['./routes/*.js'], // Path to the API routes
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Middleware
 app.use(helmet());
@@ -16,32 +38,36 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/apps', appRoutes);
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'OK', 
-    message: 'Emirates Backend is running',
-    timestamp: new Date().toISOString()
+  res.json({
+    status: 'UP',
+    timestamp: new Date().toISOString(),
+    service: 'Emirates Backend API',
+    version: '1.0.0'
   });
 });
 
-// Error handling middleware
+// API routes
+app.use('/api/apps', appRoutes);
+
+// Global error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ 
-    error: 'Something went wrong!',
-    message: err.message 
+  console.error('Error:', err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: err.message
   });
 });
 
 // 404 handler
 app.use('*', (req, res) => {
-  res.status(404).json({ 
-    error: 'Route not found',
-    message: `Cannot ${req.method} ${req.originalUrl}`
+  res.status(404).json({
+    error: 'Not Found',
+    message: `Route ${req.originalUrl} not found`
   });
 });
 
@@ -49,6 +75,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Emirates Backend server running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
   console.log(`🔗 API Base URL: http://localhost:${PORT}/api/apps`);
+  console.log(`📚 Swagger UI: http://localhost:${PORT}/api-docs`);
 });
 
 module.exports = app; 

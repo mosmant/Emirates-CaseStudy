@@ -1,2 +1,3 @@
-com/emirates/apigateway/controller/FallbackController.class
-com/emirates/apigateway/ApiGatewayApplication.class
+com/example/apigateway/service/AppGatewayService.class
+com/example/apigateway/controller/AppGatewayController.class
+com/example/apigateway/ApiGatewayApplication.class

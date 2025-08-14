@@ -36,6 +36,11 @@ class DataManager {
     return data.find(app => app.appName === appName);
   }
 
+  // Get app by name (alias for findAppByAppName)
+  async getAppByName(appName) {
+    return await this.findAppByAppName(appName);
+  }
+
   // Get all apps
   async getAllApps() {
     return await this.readData();
@@ -46,12 +51,13 @@ class DataManager {
     const data = await this.readData();
     return data.filter(app => {
       return Object.keys(criteria).every(key => {
+        if (!criteria[key]) return true; // Skip empty criteria
         if (key === 'appName') {
           return app.appName.toLowerCase().includes(criteria[key].toLowerCase());
         } else if (key === 'appOwner') {
           return app.appData.appOwner.toLowerCase().includes(criteria[key].toLowerCase());
         } else if (key === 'isValid') {
-          return app.appData.isValid === criteria[key];
+          return app.appData.isValid === (criteria[key] === 'true' || criteria[key] === true);
         }
         return true;
       });
@@ -64,7 +70,7 @@ class DataManager {
     const appIndex = data.findIndex(app => app.appName === appName);
     
     if (appIndex === -1) {
-      throw new Error('App not found');
+      return null; // Return null instead of throwing error
     }
 
     // Only allow updating appOwner and isValid fields
@@ -88,7 +94,7 @@ class DataManager {
     const appIndex = data.findIndex(app => app.appName === appName);
     
     if (appIndex === -1) {
-      throw new Error('App not found');
+      return null; // Return null instead of throwing error
     }
 
     const deletedApp = data[appIndex];
@@ -134,4 +140,4 @@ class DataManager {
   }
 }
 
-module.exports = new DataManager(); 
+module.exports = DataManager; 

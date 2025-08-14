@@ -10,18 +10,24 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
-    "fs-extra": "^11.1.1"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2",
     "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
     "supertest": "^6.3.3"
   },
-  "keywords": ["emirates", "sdet", "case-study"],
+  "keywords": [
+    "emirates",
+    "sdet",
+    "case-study"
+  ],
   "author": "SDET Candidate",
   "license": "MIT"
-} 
+}
